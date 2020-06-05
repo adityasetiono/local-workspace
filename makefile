@@ -35,3 +35,20 @@ nginx_install:
 nginx_upgrade:
 	helm upgrade ${NGINX_RELEASE_NAME} ${NGINX_CHART_NAME} -n ${NGINX_NAMESPACE} -f nginx/values.yaml
 
+# MAILHOG
+MAILHOG_CHART_NAME?=codecentric/mailhog
+MAILHOG_RELEASE_NAME?=mailhog
+
+mailhog_install:
+	helm install ${MAILHOG_RELEASE_NAME} ${MAILHOG_CHART_NAME} -n ${NAMESPACE} -f mailhog/values.yaml
+
+mailhog_upgrade:
+	helm upgrade ${MAILHOG_RELEASE_NAME} ${MAILHOG_CHART_NAME} -n ${NAMESPACE} -f mailhog/values.yaml
+
+mailhog_restart: mailhog_upgrade
+
+mailhog_stop:
+	kubectl delete deployments ${MAILHOG_RELEASE_NAME} -n ${NAMESPACE} && kubectl delete services ${MAILHOG_RELEASE_NAME} -n ${NAMESPACE}
+
+mailhog_delete:
+	helm delete ${MAILHOG_RELEASE_NAME}
