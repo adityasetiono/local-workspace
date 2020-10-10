@@ -1,6 +1,6 @@
 # INIT
 NAMESPACE?=dev
-NGINX_NAMESPACE?=nginx
+NGINX_NAMESPACE?=ingress-nginx
 CLUSTER_NAME?=local-cluster
 cluster_create:
 	kind create cluster --name ${CLUSTER_NAME}
@@ -27,8 +27,8 @@ mysql_echo_password:
 	kubectl get secret -n ${NAMESPACE} ${MYSQL_RELEASE_NAME} -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo
 
 # NGINX
-NGINX_CHART_NAME?=stable/nginx-ingress
-NGINX_RELEASE_NAME?=nginx
+NGINX_CHART_NAME?=ingress-nginx/ingress-nginx
+NGINX_RELEASE_NAME?=ingress-nginx
 
 nginx_install:
 	helm install ${NGINX_RELEASE_NAME} ${NGINX_CHART_NAME} -n ${NGINX_NAMESPACE} -f nginx/values.yaml
